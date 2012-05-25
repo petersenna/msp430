@@ -1,13 +1,14 @@
-Fedora includes all packages you need to develop for MSP430. See the makefile for example on how to compile. Fedora 17 has the packages:
+Fedora includes all packages you need to develop for MSP430. See the Makefile
+for example on how to compile. Fedora 17 includes the packages:
 mspdebug-0.18-2.fc17.x86_64
 msp430-gcc-3.2.3-6.20100805cvs.fc17.x86_64
 msp430-libc-0-5.20090726cvs.fc17.noarch
 msp430-binutils-2.19.1-4.fc17.x86_64
 
-For installing it:
+For installing the needed packages:
 [peter@ace msp430]$ sudo yum install msp*
 
-Then, for programming your LaunchPad is:
+Then, for programming your LaunchPad:
 
 [peter@ace msp430]$ make OBJS=button.o
 msp430-gcc -O0 -Wall -g -mmcu=msp430x2012 -c button.c
