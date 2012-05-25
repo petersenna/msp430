@@ -1,0 +1,54 @@
+Fedora includes all packages you need to develop for MSP430. See the makefile for example on how to compile. Fedora 17 has the packages:
+mspdebug-0.18-2.fc17.x86_64
+msp430-gcc-3.2.3-6.20100805cvs.fc17.x86_64
+msp430-libc-0-5.20090726cvs.fc17.noarch
+msp430-binutils-2.19.1-4.fc17.x86_64
+
+For installing it:
+[peter@ace msp430]$ sudo yum install msp*
+
+Then, for programming your LaunchPad is:
+
+[peter@ace msp430]$ make OBJS=button.o
+msp430-gcc -O0 -Wall -g -mmcu=msp430x2012 -c button.c
+msp430-gcc -O0 -Wall -g -mmcu=msp430x2012 -o main.elf button.o
+
+[peter@ace msp430]$ sudo mspdebug rf2500
+MSPDebug version 0.18 - debugging tool for MSP430 MCUs
+Copyright (C) 2009-2011 Daniel Beer <dlbeer@gmail.com>
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Trying to open interface 1 on 036
+Initializing FET...
+FET protocol version is 30066536
+Configured for Spy-Bi-Wire
+Set Vcc: 3000 mV
+Device ID: 0xf201
+Device: MSP430F2012
+Code memory starts at 0xf800
+Number of breakpoints: 2
+fet: FET returned NAK
+fet: warning: message 0x30 failed
+
+Available commands:
+    =         delbreak  gdb       load      opt       reset     simio     
+    alias     dis       help      locka     prog      run       step      
+    break     erase     hexout    md        read      set       sym       
+    cgraph    exit      isearch   mw        regs      setbreak  
+
+Available options:
+    color           gdb_loop        iradix          
+    fet_block_size  gdbc_xfer_size  quiet           
+
+Type "help <topic>" for more information.
+Press Ctrl+D to quit.
+
+(mspdebug) prog main.elf
+Erasing...
+Programming...
+Writing  108 bytes to f800 [section: .text]...
+Writing   32 bytes to ffe0 [section: .vectors]...
+(mspdebug) exit
+[peter@ace msp430]$
+
