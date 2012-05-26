@@ -12,7 +12,7 @@
  * int dco(unsigned int rsel, unsigned int dco) - consumes 4 ints of memory but
  * it is easy to understand.
  *
- * int dco2(unsigned int rsel, unsigned int dco) - consumes 2 insts of memory
+ * int dco2(unsigned int rsel, unsigned int dco) - consumes 2 ints of memory
  * but is a little tricky.
  *
  * #define DCO3(rsel,dco) - consumes no memory but is tricky and may be 
