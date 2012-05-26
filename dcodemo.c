@@ -124,7 +124,7 @@ void blink(unsigned int led, unsigned int times)
  * 
  */
 
-/* This is easyer to understand but consumes 4 ints of memory */
+/* This is easier to understand but consumes 4 ints of memory */
 int dco(unsigned int rsel, unsigned int dco)
 {
 	unsigned int bcsctl1, dcoctl;
