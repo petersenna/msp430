@@ -8,6 +8,16 @@
  * Demonstrates configuration of the DCO by showing changing LED flash frequency.
  * The LED flash uses the same delay loop, but the speed at which the loop runs
  * depends on the DCO frequency running MCLK.
+ *
+ * int dco(unsigned int rsel, unsigned int dco) - consumes 4 ints of memory but
+ * it is easy to understand.
+ *
+ * int dco2(unsigned int rsel, unsigned int dco) - consumes 2 insts of memory
+ * but is a little tricky.
+ *
+ * #define DCO3(rsel,dco) - consumes no memory but is tricky and may be 
+ * dangerous
+ *
  */
 
 #include <msp430x20x2.h>
@@ -18,8 +28,17 @@
 #define DCOCTL_MASK 	0xe0	//0b11100000
 #define BCSCTL1_MASK	0x0f	//0b00001111
 
+#define DCO3(rsel,dco) {\
+	if (!((rsel < 0) || (rsel > 15) || (dco < 0) || (dco > 7))){\
+		BCSCTL1 = ((BCSCTL1 & ~BCSCTL1_MASK) | (rsel));\
+		DCOCTL = (DCOCTL & ~DCOCTL_MASK) | (dco << 5);\
+	} else \
+		blink(REDLED, 2);\
+}
+
 void blink(unsigned int led, unsigned int times);
 int dco(unsigned int rsel, unsigned int dco);
+int dco2(unsigned int rsel, unsigned int dco);
 void delay(void);
 
 /*
@@ -37,34 +56,32 @@ int main(void) {
 	P1DIR = REDLED+GREENLED;
 	
 	for (;;) {
-		if (dco(2, 6) < 0)
+		if (dco(11, 3) < 0)
 			blink(REDLED, 2);
 
 		blink(GREENLED, 5);
 		while ((P1IN&BUTTON) == BUTTON);
 
-		if (dco(7, 3) < 0)
+		if (dco2(11, 3) < 0)
 			blink(REDLED, 2);
 
 		blink(GREENLED, 5);
 		while ((P1IN&BUTTON) == BUTTON);
 
-		if (dco(9, 5) < 0)
-			blink(REDLED, 2);
-
-		blink(GREENLED, 5);
-		while ((P1IN&BUTTON) == BUTTON);
-
-		if (dco(15, 3) < 0)
-			blink(REDLED, 2);
+		DCO3(11, 3);
 
 		blink(GREENLED, 5);
 		while ((P1IN&BUTTON) == BUTTON);
 
 		if (dco(20, 8) < 0)
 			blink(REDLED, 2);
+		while ((P1IN&BUTTON) == BUTTON);
 
-		blink(GREENLED, 5);
+		if (dco2(20, 8) < 0)
+			blink(REDLED, 2);
+		while ((P1IN&BUTTON) == BUTTON);
+
+		DCO3(20, 8);
 		while ((P1IN&BUTTON) == BUTTON);
 	}
 }
@@ -103,6 +120,8 @@ void blink(unsigned int led, unsigned int times)
  * dco(15,7) = 21.00 Mhz
  * 
  */
+
+/* This is easyer to understand but consumes 4 ints of memory */
 int dco(unsigned int rsel, unsigned int dco)
 {
 	unsigned int bcsctl1, dcoctl;
@@ -130,6 +149,31 @@ int dco(unsigned int rsel, unsigned int dco)
 	/* save it back to the registers */
 	BCSCTL1 = bcsctl1;
 	DCOCTL = dcoctl;
+
+	return 0;
+}
+
+/* This is more tricky but consumes only 2 ints of memory */
+int dco2(unsigned int rsel, unsigned int dco)
+{
+	/* Check if parameters are in correct range */
+	if ((rsel < 0) || (rsel > 15) || (dco < 0) || (dco > 7))
+		return -1;
+
+	/* Shift dco so the 3 less significant bits
+	 * become the 3 more signigicant bits */
+	dco = dco << 5;
+
+	/* We want to change only the bits described by BCSCTL1_MASK and 
+	 * DCOCTL_MASK. Using |= (BCSCTL1 & ~BCSCTL1_MASK) and 
+	 * |= (DCOCTL & ~DCOCTL_MASK) only reads the bits we will not change.
+	 */
+	rsel |= (BCSCTL1 & ~BCSCTL1_MASK);
+	dco  |= (DCOCTL & ~DCOCTL_MASK);
+
+	/* save it back to the registers */
+	BCSCTL1 = rsel;
+	DCOCTL = dco;
 
 	return 0;
 }
