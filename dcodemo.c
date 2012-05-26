@@ -183,6 +183,6 @@ int dco2(unsigned int rsel, unsigned int dco)
 
 void delay(void)
 {
-	unsigned int n;
+	volatile unsigned int n;
 	for (n = 0; n < 60000; n++);
 }
