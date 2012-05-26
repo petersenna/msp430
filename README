@@ -5,8 +5,7 @@ Peter Senna Tschudin - peter.senna@gmail.com
 If you want to learn about programming the MSP430:
 http://mspsci.blogspot.com.br/2010/07/tutorial-01-getting-started.html
 
-See the file howto-Linux for details about how generate binary files and send it to the LaunchPad under Linux.
-If you have necessary packages installed, clone the repo and then:
+See the file howto-Linux for details about how generate binary files and send it to the LaunchPad under Linux. If you have necessary packages installed, clone the repo and then:
 [peter@ace msp430]$ make OBJS=dcodemo.o
 
 Note the ".o" extension. After that:
