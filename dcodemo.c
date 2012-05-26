@@ -29,7 +29,7 @@
 #define BCSCTL1_MASK	0x0f	//0b00001111
 
 #define DCO3(rsel,dco) {\
-	if (!((rsel < 0) || (rsel > 15) || (dco < 0) || (dco > 7))){\
+	if ((rsel >= 0) && (rsel <= 15) && (dco >= 0) && (dco <= 7)){\
 		BCSCTL1 = ((BCSCTL1 & ~BCSCTL1_MASK) | (rsel));\
 		DCOCTL = (DCOCTL & ~DCOCTL_MASK) | (dco << 5);\
 	} else \
