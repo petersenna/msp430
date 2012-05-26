@@ -3,5 +3,19 @@ Code licensed under GPLv2 for Texas Instruments MSP430 LauchPad
 Peter Senna Tschudin - peter.senna@gmail.com
 
 If you want to learn about programming the MSP430:
-
 http://mspsci.blogspot.com.br/2010/07/tutorial-01-getting-started.html
+
+See the file howto-Linux for details about how generate binary files and send it to the LaunchPad under Linux.
+If you have necessary packages installed, clone the repo and then:
+[peter@ace msp430]$ make OBJS=dcodemo.o
+
+Note the ".o" extension. After that:
+[peter@ace msp430]$ sudo mspdebug rf2500
+...
+(mspdebug) prog main.elf
+Erasing...
+Programming...
+Writing  702 bytes to f800 [section: .text]...
+Writing   32 bytes to ffe0 [section: .vectors]...
+(mspdebug) run
+Running. Press Ctrl+C to interrupt...
