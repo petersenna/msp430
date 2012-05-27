@@ -34,7 +34,7 @@
 #define DCO3(rsel,dco) {\
 	if ((rsel >= 0) && (rsel <= 15) && (dco >= 0) && (dco <= 7)){\
 		BCSCTL1 = ((BCSCTL1 & ~BCSCTL1_MASK) | (rsel));\
-		DCOCTL = (DCOCTL & ~DCOCTL_MASK) | (dco << 5);\
+		DCOCTL = ((DCOCTL & ~DCOCTL_MASK) | (dco << 5));\
 	} else \
 		blink(REDLED, 2);\
 }
