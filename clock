@@ -1,0 +1,39 @@
+/*
+ * main.c
+ */
+int main(void) {
+    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+    int count = 0;
+	P1DIR|=BIT0;
+	P1OUT&=~BIT0;
+	P1DIR&=~BIT3;
+	P1REN|=0x08;
+	P1OUT|=0x08;
+	    //BCSCTL1 = CALBC1_1MHZ;
+	      //      DCOCTL = CALDCO1_1MHZ;
+	            while(1)
+	            {
+	                if((P1IN & BIT3)==0)
+	                {
+	                if((count % 2)==0)
+	                {
+	                    BCSCTL1 &= 0x00;
+	                    BCSCTL1 |= 0x08;
+                        DCOCTL |= 0x60;
+                        DCOCTL &= 0x60;
+	                }
+
+
+	                else
+	                {
+	                    BCSCTL1|=0x03;
+                        BCSCTL1&=0x03;
+                        DCOCTL |= 0x60;
+                        DCOCTL &= 0x60;
+	                }
+	                P1OUT ^= 0x01;
+	                count = count +1;
+ 	            }
+	            }
+	return 0;
+}
