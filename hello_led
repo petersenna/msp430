@@ -1,0 +1,29 @@
+#include <msp430.h> //a header file to include library of msp
+
+/*
+ * main.c
+ */
+ int i;
+int main(void) {
+   WDTCTL = WDTPW | WDTHOLD;
+                             // Stop watchdog timer to reset(everything goes to 0 or initial stage) the system ,this timer tells the system which task to fetch from where if it goes to an undefined state
+	                            //we dont want this timer to work at present as we r in a initial state
+    //if in the watchdog mode it will work as and if in interval mode it will work as
+    //non maskable interrupt
+
+    P1DIR&=0x01; P1DIR&=0x40;   //P1DIR sets the first port as input
+    while(1) {
+
+        P1OUT^=0x01;
+        for ( i=0;i<15000;i++);
+
+            //P1DIR|=0x01;
+
+
+//        P1OUT^=0x00;
+        //for(j=0;j<15000;j++);
+P1OUT^=0x40;
+    }
+
+	return 0;
+}
